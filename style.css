@@ -1,1 +1,145 @@
+*{
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
 
+body{
+  margin:0;
+  background:#070716;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+}
+
+.container{
+  width:100%;
+  max-width:390px;
+  padding:20px;
+  text-align:center;
+}
+
+h1{
+  color:#7fffd4;
+}
+
+.tagline{
+  color:#aaa;
+  font-size:13px;
+}
+
+.stats{
+  display:flex;
+  justify-content:space-between;
+  margin:20px 0;
+  font-size:13px;
+}
+
+.progress-circle{
+  position:relative;
+  width:120px;
+  height:120px;
+  margin:20px auto;
+}
+
+svg{
+  transform:rotate(-90deg);
+}
+
+circle{
+  fill:none;
+  stroke-width:6;
+  stroke:#222;
+}
+
+#progressCircle{
+  stroke:#00ffd5;
+  stroke-dasharray:339;
+  stroke-dashoffset:339;
+  transition:0.5s;
+  filter:drop-shadow(0 0 6px #00ffd5);
+}
+
+.percent{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:18px;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:25px;
+  border:none;
+  outline:none;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  margin-top:10px;
+  border:none;
+  border-radius:30px;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.submit{background:#00ffd5;}
+.admin{background:#ffb300;}
+.join{background:#00aaff;}
+.download{
+  display:none;
+  background:#00ff6a;
+}
+
+#message{
+  margin-top:10px;
+  font-size:14px;
+}
+
+/* ===== NOTICE POPUP ===== */
+.notice-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.75);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
+
+.notice-box{
+  background:#0c0c24;
+  border:1px solid #00ffd5;
+  border-radius:15px;
+  padding:20px;
+  width:85%;
+  max-width:320px;
+  text-align:center;
+  box-shadow:0 0 15px #00ffd5;
+}
+
+.notice-box h3{
+  margin-top:0;
+  color:#00ffd5;
+}
+
+.notice-box p{
+  font-size:14px;
+  color:#ddd;
+}
+
+.notice-box button{
+  background:#00ffd5;
+  color:#000;
+  border:none;
+  padding:10px 20px;
+  border-radius:25px;
+  cursor:pointer;
+  margin-top:10px;
+}
