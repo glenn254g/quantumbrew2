@@ -1,4 +1,4 @@
-/* ===== EDITED LINKS ===== */
+/* ===== LINKS ===== */
 const GROUP_LINK = "https://t.me/betfitystakers";
 const ADMIN_LINK = "https://t.me/prince101g";
 
@@ -19,7 +19,7 @@ const db = firebase.firestore();
 const TARGET = 1000;
 let registered = 0;
 
-/* ===== NOTICE POPUP ===== */
+/* ===== NOTICE ===== */
 window.onload = () => {
   const notice = document.getElementById("notice");
   if (notice && !sessionStorage.getItem("noticeSeen")) {
@@ -28,39 +28,30 @@ window.onload = () => {
 };
 
 function closeNotice() {
-  const notice = document.getElementById("notice");
-  if (notice) notice.style.display = "none";
+  document.getElementById("notice").style.display = "none";
   sessionStorage.setItem("noticeSeen", "true");
 }
 
 /* ===== UI ===== */
 function updateUI() {
-  const regEl = document.getElementById("registered");
-  const remEl = document.getElementById("remaining");
-  const percentEl = document.getElementById("percent");
-  const progEl = document.getElementById("progressCircle");
-  const downloadBtn = document.getElementById("downloadBtn");
+  document.getElementById("registered").innerText = registered;
+  document.getElementById("remaining").innerText = TARGET - registered;
 
-  if (regEl) regEl.innerText = registered;
-  if (remEl) remEl.innerText = TARGET - registered;
+  const percent = Math.floor((registered / TARGET) * 100);
+  document.getElementById("percent").innerText = percent + "%";
 
-  let percent = Math.floor((registered / TARGET) * 100);
-  if (percentEl) percentEl.innerText = percent + "%";
+  const offset = 339 - (339 * percent) / 100;
+  document.getElementById("progressCircle").style.strokeDashoffset = offset;
 
-  if (progEl) {
-    let offset = 339 - (339 * percent / 100);
-    progEl.style.strokeDashoffset = offset;
-  }
-
-  if (downloadBtn && registered >= TARGET) {
-    downloadBtn.style.display = "block";
+  if (registered >= TARGET) {
+    document.getElementById("downloadBtn").style.display = "block";
   }
 }
 
-/* ===== LOAD LIVE DATA ===== */
+/* ===== LIVE COUNTER ===== */
 db.collection("stats").doc("counter").onSnapshot(doc => {
-  if (doc.exists && typeof doc.data().registered === "number") {
-    registered = doc.data().registered;
+  if (doc.exists) {
+    registered = doc.data().registered || 0;
   } else {
     registered = 0;
     db.collection("stats").doc("counter").set({ registered: 0 });
@@ -68,26 +59,22 @@ db.collection("stats").doc("counter").onSnapshot(doc => {
   updateUI();
 });
 
-/* ===== SUBMIT CONTACT ===== */
+/* ===== SUBMIT ===== */
 function submitContact() {
-  const name = document.getElementById("name")?.value.trim();
-  const phone = document.getElementById("phone")?.value.trim();
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
   const msg = document.getElementById("message");
 
   if (!name || !phone) {
-    if (msg) {
-      msg.style.color = "red";
-      msg.innerText = "Fill all fields";
-    }
+    msg.style.color = "red";
+    msg.innerText = "Fill all fields";
     return;
   }
 
   db.collection("contacts").doc(phone).get().then(doc => {
     if (doc.exists) {
-      if (msg) {
-        msg.style.color = "red";
-        msg.innerText = "Contact already verified";
-      }
+      msg.style.color = "red";
+      msg.innerText = "Contact already verified";
     } else {
       db.collection("contacts").doc(phone).set({
         name,
@@ -95,18 +82,16 @@ function submitContact() {
         time: Date.now()
       });
 
-      db.collection("stats").doc("counter")
-        .update({
-          registered: firebase.firestore.FieldValue.increment(1)
-        });
+      db.collection("stats").doc("counter").update({
+        registered: firebase.firestore.FieldValue.increment(1)
+      });
 
-      if (msg) {
-        msg.style.color = "#00ff6a";
-        msg.innerText =
-          "Contact submitted successfully .. vcf file will drop in our group";
-      }
+      msg.style.color = "#00ff6a";
+      msg.innerText = "Contact submitted successfully";
 
-      setTimeout(() => window.location.href = GROUP_LINK, 2000);
+      setTimeout(() => {
+        window.location.href = GROUP_LINK;
+      }, 2000);
     }
   });
 }
@@ -120,7 +105,7 @@ function joinGroup() {
   window.location.href = GROUP_LINK;
 }
 
-/* ===== VCF ===== */
+/* ===== VCF DOWNLOAD ===== */
 function downloadVCF() {
   db.collection("contacts").get().then(snapshot => {
     let vcf = "";
