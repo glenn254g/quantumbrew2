@@ -1,16 +1,6 @@
-/* ===== EDIT THESE LINKS ===== */
-const GROUP_LINK = "https://t.me/YOUR_GROUP";
-const ADMIN_LINK = "https://t.me/YOUR_USERNAME";
-
-/* ===== FIREBASE CONFIG ===== */
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_DOMAIN",
-  projectId: "YOUR_PROJECT_ID"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+/* ===== LINKS ===== */
+const GROUP_LINK = "https://t.me/betfitystakers";
+const ADMIN_LINK = "https://t.me/prince101g";
 
 /* ===== GLOBALS ===== */
 const TARGET = 1000;
@@ -18,72 +8,63 @@ let registered = 0;
 
 /* ===== NOTICE POPUP ===== */
 window.onload = () => {
-  if(!sessionStorage.getItem("noticeSeen")){
-    document.getElementById("notice").style.display = "flex";
+  const notice = document.getElementById("notice");
+  if(notice && !sessionStorage.getItem("noticeSeen")){
+    notice.style.display = "flex";
   }
 };
 
 function closeNotice(){
-  document.getElementById("notice").style.display = "none";
+  const notice = document.getElementById("notice");
+  if(notice) notice.style.display = "none";
   sessionStorage.setItem("noticeSeen","true");
 }
 
 /* ===== UI ===== */
 function updateUI(){
-  document.getElementById("registered").innerText = registered;
-  document.getElementById("remaining").innerText = TARGET - registered;
+  const regEl = document.getElementById("registered");
+  const remEl = document.getElementById("remaining");
+  const percentEl = document.getElementById("percent");
+  const progEl = document.getElementById("progressCircle");
+  const downloadBtn = document.getElementById("downloadBtn");
+
+  if(regEl) regEl.innerText = registered;
+  if(remEl) remEl.innerText = TARGET - registered;
 
   let percent = Math.floor((registered / TARGET) * 100);
-  document.getElementById("percent").innerText = percent + "%";
+  if(percentEl) percentEl.innerText = percent + "%";
 
-  let offset = 339 - (339 * percent / 100);
-  document.getElementById("progressCircle").style.strokeDashoffset = offset;
+  if(progEl) {
+    let offset = 339 - (339 * percent / 100);
+    progEl.style.strokeDashoffset = offset;
+  }
 
-  if(registered >= TARGET){
-    document.getElementById("downloadBtn").style.display = "block";
+  if(downloadBtn && registered >= TARGET){
+    downloadBtn.style.display = "block";
   }
 }
 
-/* ===== LOAD LIVE DATA ===== */
-db.collection("stats").doc("counter").onSnapshot(doc=>{
-  if(doc.exists){
-    registered = doc.data().registered;
-    updateUI();
-  }else{
-    db.collection("stats").doc("counter").set({registered:0});
-  }
-});
-
 /* ===== SUBMIT CONTACT ===== */
 function submitContact(){
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
+  const name = document.getElementById("name")?.value.trim();
+  const phone = document.getElementById("phone")?.value.trim();
   const msg = document.getElementById("message");
 
   if(!name || !phone){
-    msg.style.color="red";
-    msg.innerText="Fill all fields";
+    if(msg){
+      msg.style.color="red";
+      msg.innerText="Fill all fields";
+    }
     return;
   }
 
-  db.collection("contacts").doc(phone).get().then(doc=>{
-    if(doc.exists){
-      msg.style.color="red";
-      msg.innerText="Contact already verified";
-    }else{
-      db.collection("contacts").doc(phone).set({
-        name, phone, time:Date.now()
-      });
-
-      db.collection("stats").doc("counter")
-        .update({registered: firebase.firestore.FieldValue.increment(1)});
-
-      msg.style.color="#00ff6a";
-      msg.innerText="Contact submitted successfully .. vcf file will drop in our group";
-
-      setTimeout(()=>window.location.href=GROUP_LINK,2000);
-    }
-  });
+  // Mock adding contact for testing
+  registered++;
+  updateUI();
+  if(msg){
+    msg.style.color="#00ff6a";
+    msg.innerText="Contact submitted successfully (test mode)";
+  }
 }
 
 /* ===== BUTTONS ===== */
@@ -92,21 +73,16 @@ function joinGroup(){ window.location.href = GROUP_LINK; }
 
 /* ===== VCF ===== */
 function downloadVCF(){
-  db.collection("contacts").get().then(snapshot=>{
-    let vcf="";
-    snapshot.forEach(doc=>{
-      const c=doc.data();
-      vcf+=BEGIN:VCARD
+  // Mock VCF for testing
+  const vcf = BEGIN:VCARD
 VERSION:3.0
-FN:${c.name}
-TEL:${c.phone}
+FN:Test User
+TEL:+254700000000
 END:VCARD
 ;
-    });
-    const blob=new Blob([vcf],{type:"text/vcard"});
-    const a=document.createElement("a");
-    a.href=URL.createObjectURL(blob);
-    a.download="QuantumVCF.vcf";
-    a.click();
-  });
+  const blob = new Blob([vcf], {type:"text/vcard"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "QuantumVCF.vcf";
+  a.click();
 }
