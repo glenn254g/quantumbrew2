@@ -1,61 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QUANTUM V.C.F</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QUANTUM V.C.F</title>
 
-  <!-- FIREBASE (REQUIRED) -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 
 <body>
-  <div class="container">
-    <h1>QUANTUM V.C.F</h1>
-    <p class="tagline">New Drop • Clean • Secure</p>
+<div class="wrapper">
 
-    <div class="stats">
-      <div>Registered<br><span id="registered">0</span></div>
-      <div>Remaining<br><span id="remaining">1000</span></div>
-      <div>Target<br>1000</div>
-    </div>
+  <h1>QUANTUM V.C.F</h1>
+  <p class="sub">New Drop • Clean • Secure</p>
 
-    <div class="progress-circle">
-      <svg width="120" height="120">
-        <circle cx="60" cy="60" r="54"></circle>
-        <circle cx="60" cy="60" r="54" id="progressCircle"></circle>
-      </svg>
-      <div class="percent" id="percent">0%</div>
-    </div>
-
-    <input id="name" placeholder="Full name" />
-    <input id="phone" placeholder="Phone (any country)" />
-
-    <button class="submit" onclick="submitContact()">Submit</button>
-    <p id="message"></p>
-
-    <button class="admin" onclick="contactAdmin()">Contact Admin</button>
-    <button class="join" onclick="joinGroup()">Join Our Group</button>
-    <button class="download" id="downloadBtn" onclick="downloadVCF()" style="display:none;">
-      Download VCF
-    </button>
+  <div class="stats">
+    <div><span id="registered">0</span><br>Registered</div>
+    <div><span id="remaining">1000</span><br>Remaining</div>
+    <div><span>1000</span><br>Target</div>
   </div>
 
-  <!-- NOTICE POPUP -->
-  <div class="notice-overlay" id="notice">
-    <div class="notice-box">
-      <h3>Important Notice</h3>
-      <p>
-        VCF file will drop in the Telegram group.  
-        Join using the join group button so you don’t miss it.
-      </p>
-      <button onclick="closeNotice()">OK, I Understand</button>
-    </div>
+  <div class="circle">
+    <span id="percent">0%</span>
   </div>
 
-  <!-- MAIN SCRIPT -->
-  <script src="script.js" defer></script>
+  <input id="name" placeholder="Full name">
+  <input id="phone" placeholder="Phone (any country)">
+
+  <button class="submit" id="submitBtn">Submit</button>
+  <button class="admin" id="adminBtn">Contact Admin</button>
+  <button class="group" id="groupBtn">Join Our Group</button>
+
+  <div id="msg"></div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
