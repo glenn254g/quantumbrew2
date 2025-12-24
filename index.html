@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>QUANTUM V.C.F</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- FIREBASE (REQUIRED) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
+
 <body>
   <div class="container">
     <h1>QUANTUM V.C.F</h1>
@@ -25,13 +30,17 @@
       <div class="percent" id="percent">0%</div>
     </div>
 
-    <input id="name" placeholder="Full name">
-    <input id="phone" placeholder="Phone (any country)">
+    <input id="name" placeholder="Full name" />
+    <input id="phone" placeholder="Phone (any country)" />
+
     <button class="submit" onclick="submitContact()">Submit</button>
     <p id="message"></p>
+
     <button class="admin" onclick="contactAdmin()">Contact Admin</button>
     <button class="join" onclick="joinGroup()">Join Our Group</button>
-    <button class="download" id="downloadBtn" onclick="downloadVCF()" style="display:none;">Download VCF</button>
+    <button class="download" id="downloadBtn" onclick="downloadVCF()" style="display:none;">
+      Download VCF
+    </button>
   </div>
 
   <!-- NOTICE POPUP -->
@@ -39,13 +48,14 @@
     <div class="notice-box">
       <h3>Important Notice</h3>
       <p>
-        vcf file will drop in the telegram group. Join using the join group button below
-        not to miss the vcf file when it drops.
+        VCF file will drop in the Telegram group.  
+        Join using the join group button so you don’t miss it.
       </p>
       <button onclick="closeNotice()">OK, I Understand</button>
     </div>
   </div>
 
+  <!-- MAIN SCRIPT -->
   <script src="script.js" defer></script>
 </body>
 </html>
